@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedHashSet;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService{
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleService roleService, ModelMapper modelMapper, BCryptPasswordEncoder encoder, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleService roleService, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.modelMapper = modelMapper;
@@ -31,13 +31,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserServiceModel registerUser(UserServiceModel userServiceModel) {
         this.roleService.seedRolesInDb();
-
         if (this.userRepository.count() == 0) {
             userServiceModel.setAuthorities(this.roleService.findAllRoles());
         } else {
             userServiceModel.setAuthorities(new LinkedHashSet<>());
+
             userServiceModel.getAuthorities().add(this.roleService.findByAuthority("ROLE_USER"));
         }
+
 
         User user = this.modelMapper.map(userServiceModel, User.class);
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Username not found!"));
     }
 }
+

@@ -35,10 +35,11 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView registerConfirm(@ModelAttribute UserRegisterBindingModel model, ModelAndView modelAndView) {
+    public ModelAndView registerConfirm(@ModelAttribute UserRegisterBindingModel model) {
         if (!model.getPassword().equals(model.getConfirmPassword())) {
             return super.view("register");
         }
+
         this.userService.registerUser(this.modelMapper.map(model, UserServiceModel.class));
 
         return super.redirect("/login");
