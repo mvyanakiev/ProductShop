@@ -35,7 +35,7 @@ public class UserController extends BaseController {
 
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ModelAndView registerConfirm(@ModelAttribute UserRegisterBindingModel model) {
+    public ModelAndView registerConfirm(@ModelAttribute UserRegisterBindingModel model, ModelAndView modelAndView) {
         if (!model.getPassword().equals(model.getConfirmPassword())) {
             return super.view("register");
         }
@@ -49,6 +49,4 @@ public class UserController extends BaseController {
     public ModelAndView login(){
         return super.view("login");
     }
-
-
 }
