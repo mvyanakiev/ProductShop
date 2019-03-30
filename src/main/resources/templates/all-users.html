@@ -9,8 +9,6 @@
 <header>
     <th:block th:include="~{fragments/navbar}"></th:block>
 </header>
-
-
 <main class="mt-3">
     <h1 class="text-center text-dark">All Users</h1>
     <hr class="hr-2 bg-dark w-75">
@@ -62,7 +60,8 @@
                             </form>
                         </th:block>
                         <th:block th:if="${#lists.contains(user.authorities, 'ROLE_USER') &&
-                            #lists.contains(user.authorities, 'ROLE_MODERATOR') && #lists.contains(user.authorities, 'ROLE_ADMIN') && !#lists.contains(user.authorities, 'ROLE_ROOT')
+                            #lists.contains(user.authorities, 'ROLE_MODERATOR') && #lists.contains(user.authorities, 'ROLE_ADMIN')
+                            && !#lists.contains(user.authorities, 'ROLE_ROOT')
                         }">
                             <form th:action="@{/users/set-user/{id}(id=${user.id})}" method="post">
                                 <input type="hidden" name="_csrf"
@@ -83,8 +82,6 @@
     </table>
     <hr class="hr-2 bg-dark">
 </main>
-
-
 <th:block th:include="~{fragments/footer}"></th:block>
 </body>
 </html>
